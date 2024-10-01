@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Меню ресторану</title>
+    <!-- Підключення Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Ваші стилі */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .menu-item {
+            margin-bottom: 15px;
+        }
+
+        .menu-item button {
+            margin-left: 10px;
+        }
+
+        #submitOrder {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Меню ресторану</h1>
+    <div id="menu"></div>
+    <button id="submitOrder">Підтвердити замовлення</button>
+
+    <script>
+        // Ініціалізація Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Розгорнути на весь екран
+
+        // Приклад меню
+        const menu = [
+            { id: 1, name: 'Піца Маргарита', price: 150 },
+            { id: 2, name: 'Салат Цезар', price: 100 },
+            { id: 3, name: 'Суп Том Ям', price: 120 },
+        ];
+
+        let order = [];
+
+        const menuDiv = document.getElementById('menu');
+
+        menu.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'menu-item';
+            itemDiv.innerHTML = `
+        <strong>${item.name}</strong> - ${item.price} грн
+        <button onclick="addToOrder(${item.id})">Додати</button>
+      `;
+            menuDiv.appendChild(itemDiv);
+        });
+
+        function addToOrder(id) {
+            const item = menu.find(i => i.id === id);
+            order.push(item);
+            tg.MainButton.text = `Замовити (${order.length})`;
+            tg.MainButton.show();
+        }
+
+        // Обробник натискання головної кнопки
+        tg.MainButton.onClick(() => {
+            // Надсилаємо дані замовлення до бота
+            tg.sendData(JSON.stringify(order));
+        });
+    </script>
+</body>
+
+</html>
