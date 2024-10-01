@@ -16,7 +16,7 @@ bot.onText(/\/start/, (msg) => {
         [{
           text: 'Відкрити меню',
           web_app: {
-            url: 'https://your-domain.com/' // Замініть на URL вашого веб-застосунку
+            url: 'https://my.carbook.pro/' // Замініть на URL вашого веб-застосунку
           }
         }]
       ],
